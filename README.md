@@ -11,13 +11,13 @@ You need these fiiles
 | File name | usage |
 | :---: | :--- |
 | node | In order to run a nodejs program you need a runtime enviroment first. |
-| UKITMain.node.js | This is then UKITWeb Framework's main program. |
-| port.conf | This file contians the port which you want the server to listen on |
+| UKITMain.node.js | This is UKITWeb Framework's main program. |
+| port.conf | This file contians the port which you want the server to listen. |
 | ukitforground.js | This is an framework code file, it is used to load data for the browser. |
 | index.upage | This is a file which will be written by your self. It is the main page. (Isn't a must) |
 | other files | Add what you need |
 
-Notice: **Only files which end by the ".upage" subfix will be translate by the framework, the others will be send to the browser directly**
+Notice: **Only files which end by the ".upage" subfix will be translated by the framework, the others will be send to the browser directly**
 
 
 ### About the UPage file
@@ -35,6 +35,6 @@ In the script in HTML, you can use `module.read(key)` to get the value which you
 
 
 
-Notice: **If a UPage file didn't have the upageCode label, it will be never returned. It means that users will see thier browser is loading endless.**
+Notice: **If a UPage file didn't have the upageCode label, it will be never returned. It means that users will see thier browser is loading endlessly.**
 
 Note: *If you want to creat a static file which dosen't need upage part, you can create it with then subfix ".html"*
