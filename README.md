@@ -37,4 +37,4 @@ In the script in HTML, you can use `module.read(key)` to get the value which you
 
 Notice: **If a UPage file didn't have the upageCode label, it will be never returned. It means that users will see thier browser is loading endlessly.**
 
-Note: *If you want to creat a static file which dosen't need upage part, you can create it with then subfix ".html"*
+Note: *If you want to creat a static file which dosen't need upage part, you can create it with the subfix ".html"*
