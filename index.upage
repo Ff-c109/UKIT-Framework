@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>User View</title>
+	<upageCode>
+		function onGet(module) {
+			var res = module.getArg("display");
+			if(res != null)
+				module.exports("display", res);
+		}
+	</upageCode>
+	<script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
+	<script>
+  		// VConsole will be exported to `window.VConsole` by default.
+	  	var vConsole = new window.VConsole();
+	</script>
+</head>
+<body>
+	<h1>User View</h1>
+	<h2 id="display"> </h2>
+	<script>
+		console.log("display");
+		document.getElementById("display").innerHTML = "display: " + module.read("display");
+		console.log(module.read("display"));
+	</script>
+</body>
+</html>
