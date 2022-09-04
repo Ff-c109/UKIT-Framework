@@ -62,6 +62,7 @@ let Module = class Module {
 	}
 };
 httpServer.on('request', (request, response) => {
+	console.log("onRequest");
 	var path = request.url.toString().substring(1, request.url.toString().length);
 	var argstr = path.split('?')[1];
 	path = path.split('?')[0];
@@ -72,6 +73,7 @@ httpServer.on('request', (request, response) => {
 		if(err) {
 			response.write(err.toString());
 			response.end();
+			console.log(err);
 		}
 		else {
 			console.log("file loaded");
@@ -79,32 +81,41 @@ httpServer.on('request', (request, response) => {
 				console.log("ukit loading");
 				response.setHeader("Content-Type", "text/html;charset=utf8");
 				var tstring = '<upageCode>';
-				console.log('searching');
 				for(var i = 0; i < data.toString().length - tstring.length; i++) {
 					if(data.toString().substring(i, i + tstring.length) == tstring) {
-						console.log("finded");
 						var loc = i;
 						loc += tstring.length;
 						tstring = '</upageCode>'
-						console.log("searching");
 						for(var j = 0; j < data.toString().length - tstring.length; j++) {
 							if(data.toString().substring(j, j + tstring.length) == tstring) {
-								console.log("finded");
 								var eloc = j;
 								j--;
-								fs.writeFile(path + ".ukitcache.js", data.toString().substring(loc, eloc) + "\n" + 'module.exports = {onGet}', () => {
+								var execUKIT = () => {
+									console.log("execute upageCode");
 									var tfunc = require("./" + path + ".ukitcache.js");
 									var tFuncRet = tfunc.onGet(module);
-									console.log(module.getExports());
 									//if(tFuncRet === "UKIT") {
 										//response.write(data.toString().substring(0, loc - tstring.length + 1) + "<script>var retv=" + '"' + tFuncRet + '"</script>' + data.toString().substring(eloc + tstring.length + 1, data.toString().length));
 										//response.end();
 									//}
 									//else {
+									console.log("exec done.");
 										response.write(data.toString().substring(0, loc - tstring.length + 1) + "<script>" + fs.readFileSync("ukitforground.js") + "\nlet module = new Module(\"" + module.getExports() + "\");" + "</script>" + data.toString().substring(eloc + tstring.length, data.toString().length));
-										console.log(data.toString().substring(0, loc - tstring.length + 1) + "<script>" + fs.readFileSync("ukitforground.js") + "\nlet module = new Module(\"" + module.getExports() + "\");" + "</script>" + data.toString().substring(eloc + tstring.length, data.toString().length));
 										response.end();
 									//}
+
+								};
+								fs.readFile(path + ".ukitcache.js", (err, code) => {
+									if(code != data.toString().substring(loc, eloc) + "\n" + 'module.exports = {onGet}') {
+										console.log("loading upageCode");
+										fs.writeFile(path + ".ukitcache.js", data.toString().substring(loc, eloc) + "\n" + 'module.exports = {onGet}', () => {
+											execUKIT();
+										});
+									}
+									else {
+										console.log("loading upageCode from cache");
+										execUKIT();
+									}
 								});
 								break;
 							}
