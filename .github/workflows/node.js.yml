@@ -26,4 +26,4 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: node UK it main.node.js
+    - run: node UKITMain.node.js
