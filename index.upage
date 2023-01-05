@@ -3,13 +3,15 @@
 <head>
 	<title>User View</title>
 	<upageCode>
-		function onGet(module) {
-			var res = module.getArg("display");
+		function onGet(framework) {
+			var res = framework.getArg("display");
 			if(res != null)
-				module.exports("display", res);
+				framework.export("display", res);
+			else
+				framework.export("display", "[Empty]");
 		}
 	</upageCode>
-	<script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
+	<script src="/vconsole.min.js"></script>
 	<script>
   		// VConsole will be exported to `window.VConsole` by default.
 	  	var vConsole = new window.VConsole();
@@ -20,8 +22,8 @@
 	<h2 id="display"> </h2>
 	<script>
 		console.log("display");
-		document.getElementById("display").innerHTML = "display: " + module.read("display");
-		console.log(module.read("display"));
+		document.getElementById("display").innerHTML = "display: " + framework.read("display");
+		console.log(framework.read("display"));
 	</script>
 </body>
 </html>

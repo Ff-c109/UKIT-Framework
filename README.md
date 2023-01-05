@@ -19,6 +19,8 @@ You need these fiiles
 
 Notice: **Only files which end by the ".upage" subfix will be translated by the framework, the others will be send to the browser directly**
 
+address-bind.conf: set the file-head to "# disable" to disable ip-binding. The second line should be ip-addr, use ',' between two address to split them.
+
 
 ### About the UPage file
 
@@ -26,12 +28,13 @@ A UPage file must be end by the subfix ".upage"
 
 It must contains the lable `<upageCode>` and it must be end by `</upageCode>`
 
-In the upageCode element, you need to create a function called "onGet" with an argument. (In this document, I named it "module")  
-module has 2 method `getArg` and `exports`  
-`module.getArg(name)` is used to get url arguments  
-`module.exports(key, value)` is used to export a value  
+In the upageCode element, you need to create a function called "onGet" with an argument. (In this document, I named it "framework")
+framework has 2 method `getArg` and `export`
+`framework.getArg(name)` is used to get url arguments
+`framework.export(key, value)` is used to export a value
 
-In scripts in HTML, you can use `module.read(key)` to get the value which you have exported.
+In scripts in HTML, you can use `framework.read(key)` to get the value which you have exported.
+
 
 
 
