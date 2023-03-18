@@ -96,7 +96,7 @@ var on_request = (request, response) => {
 									//}
 									//else {
 									console.log("exec done.");
-										response.write(data.toString().substring(0, loc - tstring.length + 1) + "<script>" + fs.readFileSync("ukitforground.js") + "\nlet framework = new Module(\"" + framework.getExports() + "\");" + "</script>" + data.toString().substring(eloc + tstring.length, data.toString().length));
+										response.write(data.toString().substring(0, loc - tstring.length + 1) + "<script>" + fs.readFileSync("ukitforground.js") + "\nlet framework = new Module(\'" + framework.getExports().replace(/'/g, "\\\'") + "\');" + "</script>" + data.toString().substring(eloc + tstring.length, data.toString().length));
 										response.end();
 									//}
 
