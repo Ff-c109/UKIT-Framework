@@ -2,11 +2,17 @@
 
 UKITWeb is a framework which helps you building your website.
 
+## UKIT 2
+
+UKIT 2 is now under devlopping!
+
+Switch to the branch "ukit-2" for more information.
+
 ## How to use it
 
 *We advise you to create an empty folder to start your project.*
 
-You need these fiiles
+You need these files
 
 | File name | usage |
 | :---: | :--- |
