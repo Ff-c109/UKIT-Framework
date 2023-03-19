@@ -1,3 +1,37 @@
+# UKIT 2
+
+The UKIT v2.0.0-pre.1.0 version is under devlop.
+
+## What's new
+
+- Use stream to transfer a common file when it is big enough. [Devlopping]
+- POST method supported [Waiting]
+- In-time interactive framework(IT2A) [Waiting]
+- Message Stream - communicating with clients real-time [Waiting]
+
+### Stream transmission
+
+Use stream to transfer a common file when it is big enough.
+
+### POST method
+
+create .post.ukit file to process POST content.
+
+A completely new file type, it can be used not only on the browser.
+
+### IT2A
+
+In-time Interactive Framework.  
+Client can call a function on server side. Server side function can access client side data.
+
+### Message Stream
+
+Server side functions can communicate with client side functions when Message Stream is enabled.
+
+It can also be used to transfer large file
+
+
+
 # UKITWeb
 
 UKITWeb is a framework which helps you building your website.
@@ -41,36 +75,4 @@ In scripts in HTML, you can use `framework.read(key)` to get the value which you
 Notice: **If a UPage file didn't have the upageCode label, it will be never returned. It means that users will see thier browser is loading endlessly.**
 
 Note: *If you want to creat a static file which dosen't need upage part, you can create it with the subfix ".html"*
-
-# UKIT 2
-
-The UKIT v2.0.0-pre.1.0 version is under devlop.
-
-## What's new
-
-- Use stream to transfer a common file when it is big enough. [Devlopping]
-- POST method supported [Waiting]
-- In-time interactive framework(IT2A) [Waiting]
-- Message Stream - communicating with clients real-time [Waiting]
-
-### Stream transmission
-
-Use stream to transfer a common file when it is big enough.
-
-### POST method
-
-create .post.ukit file to process POST content.
-
-A completely new file type, it can be used not only on the browser.
-
-### IT2A
-
-In-time Interactive Framework.  
-Client can call a function on server side. Server side function can access client side data.
-
-### Message Stream
-
-Server side functions can communicate with client side functions when Message Stream is enabled.
-
-It can also be used to transfer large file
 
