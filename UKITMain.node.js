@@ -201,29 +201,40 @@ var on_request = (request, response) => {
 	if(request.url.toString().split('?')[0] == "/")
 		path = "index.upage";
 	let framework = new Module(argstr, response);
- 	fs.readFile(path, (err, data) => {
-		if(err) {
-			if(err.code == "ENOENT") {
-				response.statusCode = 404;
-				console.log(404);
-			}
-			response.write(err.toString());
-			response.end();
-			console.log(err);
-		}
-		else {
-			response.statusCode = 200;
-			console.log("file loaded");
-			if(path.split('.')[path.split('.').length - 1] == "upage" || (path.split('.')[path.split('.').length - 2] == "upage" && path.split('.')[path.split('.').length - 1] == "html")) {
-				ukit_loading(data, path, response, framework);
-			}
-			else {
-				console.log("return file");
-				response.write(data);
-				response.end();
-			}
-		}
-	});
+    if(path.split('.')[path.split('.').length - 1] == "upage" || (path.split('.')[path.split('.').length - 2] == "upage" && path.split('.')[path.split('.').length - 1] == "html")) {
+        fs.readFile(path, (err, data) => {
+            if(err) {
+                if(err.code == "ENOENT") {
+                    response.statusCode = 404;
+                }
+                response.write(err.toString());
+                response.end();
+                console.log(err);
+            }
+            else {
+                response.statusCode = 200;
+                ukit_loading(data, path, response, framework);
+            }
+        });
+    }
+    else {
+        fs.exists(path, (existance) => {
+            if(existance) {
+                var rf = fs.createReadStream(path);
+                rf.on("data", (d) => {
+                    response.write(d);
+                });
+                rf.on("end", () => {
+                    response.end();
+                });
+            }
+            else {
+                response.statusCode = 404;
+                response.write("File not exist");
+                response.end();
+            }
+        });
+    }
 };
 
 var ip_addr_bind = [ "Error" ];
