@@ -218,6 +218,7 @@ var on_request = (request, response) => {
         });
     }
     else {
+        console.log("Common File.");
         fs.exists(path, (existance) => {
             if(existance) {
                 var rf = fs.createReadStream(path);
