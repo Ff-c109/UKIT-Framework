@@ -5,10 +5,18 @@
 	<upageCode>
 		function onGet(framework) {
 			var res = framework.getArg("display");
+			var display = "";
 			if(res != null)
-				framework.export("display", "\'" + res + "\'");
+				display = "\"" + res + "\"";
 			else
-				framework.export("display", "[Empty]");
+				display = "[Empty]";
+			var fs = require("fs");
+			framework.newProcess("chproc_demo.js", "Hello, 你好, こんにちは, Здравствыйте", (retv) => {
+				console.log("retv: " + retv);
+				framework.export("display", display);
+				framework.export("ch_proc", retv);
+				framework.send();
+			});
 		}
 	</upageCode>
 	<script src="/vconsole.min.js"></script>
@@ -20,10 +28,13 @@
 <body>
 	<h1>User View</h1>
 	<h2 id="display"> </h2>
+	<textarea id="ch_proc" style="width: 700px; height: 270px"> </textarea>
 	<script>
 		console.log("display");
 		document.getElementById("display").innerHTML = "display: " + framework.read("display");
 		console.log(framework.read("display"));
+		var ch_proc = framework.read("ch_proc");
+		document.getElementById("ch_proc").value = "Child Process Returned: \n" + ch_proc;
 	</script>
 </body>
 </html>

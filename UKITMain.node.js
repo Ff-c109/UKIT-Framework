@@ -1,11 +1,46 @@
+const util = require("util");
+const child_process = require("child_process");
 const fs = require("fs");
 const http = require("http");
+const querystring = require("querystring");
 
 const httpServer = http.createServer();
 
+function getPort(callback) {
+    var port = 2000;
+    var done = false;
+    var findPort = () => {
+	    var req = http.request({hostname: "::1", port: port.toString(), path: "/", method: "GET"}, (res) => {
+		port++;
+		findPort();
+	    });
+	    req.on('error', e => {
+		if(e.code.toString() != "ECONNREFUSED") {
+		    port++;
+		    findPort();
+		}
+		else {
+		    console.log("return");
+		    done = true;
+		    return port;
+		}
+	    });
+	    req.end();
+    };
+    findPort();
+    var ret = () => {
+    	if(done)
+    		callback(port);
+    	else
+    		setTimeout(ret, 0);
+    };
+    ret();
+}
+
 let Module = class Module {
-	constructor(arg) {
+	constructor(arg, rep) {
 		this.argstr = arg;
+		this.response = rep;
 		this.exportsArg = "[EMPTY]";
 	}
 	getArg(key) {
@@ -56,9 +91,60 @@ let Module = class Module {
 	getExports() {
 		return this.exportsArg;
 	}
+	send() {
+		this.response.write(this.data.toString().substring(0, this.loc - this.tstring.length + 1) + "<script>" + fs.readFileSync("ukitforground.js") + "\nlet framework = new Module(\'" + this.exportsArg.replace(/'/g, "\\\'").replace(/\n/g, "\\n") + "\');" + "</script>" + this.data.toString().substring(this.eloc + this.tstring.length, this.data.toString().length));
+		this.response.end();
+	}
+	newProcess(path, argv, callback) {
+		var fs = require("fs").promises;
+		const read = async () => {
+			var UKITMP = await fs.readFile("UKITMP.js");
+			var MPCode = await fs.readFile(path);
+			var cacheFile = await fs.readFile(path + ".ukitcache.js");
+			if(cacheFile != UKITMP + MPCode)
+				await fs.writeFile(path + ".ukitcache.js", UKITMP + MPCode);
+			return ;
+		};
+		read();
+		getPort((port) => {
+		var retv = "";
+		var this_server = http.createServer((req, rep) => {
+			if(req.url.split('?')[0] == "/ret") {
+				//retv = req.url.split('?')[1];
+				var retv = "";
+				req.on('data', (d) => {
+					retv += d;
+				});
+				req.on('end', () => {
+					var POST = querystring.parse(retv);
+					//console.log(retv);
+					//console.log(POST);
+					callback(POST.ret);
+					this_server.close();
+				});
+				return ;
+			}
+			
+			rep.write(argv);
+			rep.end();
+		});
+		var start_server = () => {
+			try {
+				this_server.listen(port);
+			}
+			catch (e) {
+				port = getPort();
+				start_server();
+			}
+		}
+		start_server();
+		child_process.exec('env UKITMP=' + port + ' node ' + path + ".ukitcache.js", (err, stdout, stderr) => {
+			console.log(stdout);
+			console.log(stderr);
+		});
+		});
+	}
 };
-
-
 
 function ukit_loading(data, path, response, framework) {
 	console.log("ukit loading");
@@ -75,12 +161,14 @@ function ukit_loading(data, path, response, framework) {
 					j--;
 					
 					var execUKIT = () => {
+						framework.data = data;
+						framework.tstring = tstring;
+						framework.loc = loc;
+						framework.eloc = eloc;
 						console.log("execute upageCode");
 						var tfunc = require("./" + path + ".ukitcache.js");
 						var tFuncRet = tfunc.onGet(framework);
 						console.log("exec done.");
-							response.write(data.toString().substring(0, loc - tstring.length + 1) + "<script>" + fs.readFileSync("ukitforground.js") + "\nlet framework = new Module(\'" + framework.getExports().replace(/'/g, "\\\'") + "\');" + "</script>" + data.toString().substring(eloc + tstring.length, data.toString().length));
-							response.end();
 
 					};
 					
@@ -112,7 +200,7 @@ var on_request = (request, response) => {
 	path = path.split('?')[0];
 	if(request.url.toString().split('?')[0] == "/")
 		path = "index.upage";
-	let framework = new Module(argstr);
+	let framework = new Module(argstr, response);
  	fs.readFile(path, (err, data) => {
 		if(err) {
 			if(err.code == "ENOENT") {
