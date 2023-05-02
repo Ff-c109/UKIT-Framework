@@ -60,3 +60,4 @@ QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-ff-c109'
 QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-ff-c109'
 QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-ff-c109'
 QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-ff-c109'
+QCoreApplication::postEvent: Unexpected null receiver

@@ -4,11 +4,11 @@ The UKIT v2.0.0-pre.1.0 version is under devlop.
 
 ## What's new
 
-- Use stream to transfer a common file when it is big enough. [Devlopping]
-- Multiple CPU Support (Multiprocess) [Devlopping] [Now avaliable]
-- POST method supported [Waiting]
-- In-time interactive framework(IT2A) [Waiting]
-- Message Stream - communicating with clients real-time [Waiting]
+- Use stream to transfer a common file when it is big enough. \[Devlopping\] \[Now avaliable\]
+- Multiple CPU Support (Multiprocess) \[Devlopping\] \[Now avaliable\]
+- POST method supported \[Waiting\]
+- In-time interactive framework(IT2A) \[Waiting\]
+- Message Stream - communicating with clients real-time \[Waiting\]
 
 ### Stream transmission
 
