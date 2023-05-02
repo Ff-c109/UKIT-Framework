@@ -1,6 +1,6 @@
 # UKIT 2
 
-The UKIT v2.0.0-pre.1.0 version is under devlop.
+The UKIT v2.0.0-pre.2.1 version is under devlop.
 
 ## What's new
 
