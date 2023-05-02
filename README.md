@@ -6,7 +6,7 @@ UKITWeb is a framework which helps you building your website.
 
 UKIT 2 is now under devlopping!
 
-Switch to the branch "ukit-2" for more information.
+Switch to the branch "ukit-2" to see what's going on!
 
 ## How to use it
 
