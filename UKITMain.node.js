@@ -3,6 +3,7 @@ const child_process = require("child_process");
 const fs = require("fs");
 const http = require("http");
 const querystring = require("querystring");
+const mime = require("mime");
 
 const httpServer = http.createServer();
 
@@ -219,6 +220,9 @@ var on_request = (request, response) => {
     }
     else {
         console.log("Common File.");
+        var mimetype = mime.getType(path);
+        console.log("MIME: " + mimetype);
+        response.writeHead(200, {'Content-Type':mimetype == "text/html" ? "text/html;charset=utf-8" : mimetype});
         fs.exists(path, (existance) => {
             if(existance) {
                 var rf = fs.createReadStream(path);
@@ -233,6 +237,7 @@ var on_request = (request, response) => {
                 response.statusCode = 404;
                 response.write("File not exist");
                 response.end();
+                console.log("File not exist");
             }
         });
     }

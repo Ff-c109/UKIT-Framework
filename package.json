@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Ff-c109/UKIT-Framework/issues"
   },
-  "homepage": "https://github.com/Ff-c109/UKIT-Framework#readme"
+  "homepage": "https://github.com/Ff-c109/UKIT-Framework#readme",
+  "dependencies": {
+    "mime": "^3.0.0"
+  }
 }
