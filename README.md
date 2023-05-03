@@ -10,6 +10,10 @@ The UKIT v2.0.0-pre.2.1 version is under devlop.
 - In-time interactive framework(IT2A) \[Waiting\]
 - Message Stream - communicating with clients real-time \[Waiting\]
 
+### Multiprocess
+
+Create new process to use multi-cpu. And it will make ukit safer, because when child process runs in to aan error, the main process won't stop.
+
 ### Stream transmission
 
 Use stream to transfer a common file when it is big enough.
