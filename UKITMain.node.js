@@ -5,6 +5,10 @@ const http = require("http");
 const querystring = require("querystring");
 const mime = require("mime");
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 const httpServer = http.createServer();
 
 function getPort(callback) {
@@ -226,8 +230,15 @@ var on_request = (request, response) => {
         fs.exists(path, (existance) => {
             if(existance) {
                 var rf = fs.createReadStream(path);
-                rf.on("data", (d) => {
-                    response.write(d);
+                rf.on("data", async (d) => {
+                    var finish = false;
+                    response.write(d, () => {
+                        finish = true;
+                    });
+                    while(!finish) {
+//                         console.log("wait 1ms");
+                        await sleep(0);
+                    }
                 });
                 rf.on("end", () => {
                     response.end();
