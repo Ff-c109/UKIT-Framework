@@ -237,7 +237,7 @@ var on_request = (request, response) => {
                     });
                     while(!finish) {
 //                         console.log("wait 1ms");
-                        await sleep(0);
+                        for(var i=0; i<6; i++) await sleep(0);
                     }
                 });
                 rf.on("end", () => {
