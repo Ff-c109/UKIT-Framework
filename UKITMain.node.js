@@ -229,20 +229,22 @@ var on_request = (request, response) => {
         response.writeHead(200, {'Content-Type':mimetype == "text/html" ? "text/html;charset=utf-8" : mimetype});
         fs.exists(path, (existance) => {
             if(existance) {
-                var rf = fs.createReadStream(path);
-                rf.on("data", async (d) => {
-                    var finish = false;
-                    response.write(d, () => {
-                        finish = true;
-                    });
-                    while(!finish) {
-//                         console.log("wait 1ms");
-                        for(var i=0; i<6; i++) await sleep(0);
-                    }
-                });
-                rf.on("end", () => {
-                    response.end();
-                });
+                var rf = fs.createReadStream(path, {highWaterMark: 4096});
+		var sended = true;
+		rf.on("readable", async () => {
+			while(!sended) {
+				for(var i = 0; i < 2; i++) await sleep(0);
+			}
+			sended = false;
+			var data;
+			if((data = rf.read()) != null)
+				response.write(data, () => {
+					sended = true;
+				});
+		});
+		rf.on("end", () => {
+			response.end();
+		});
             }
             else {
                 response.statusCode = 404;
