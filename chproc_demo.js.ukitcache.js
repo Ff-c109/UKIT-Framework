@@ -26,7 +26,7 @@ let Framework = class Framework {
 		req.write(contents);
 		req.end();
 	}
-	onReady_daemon() {
+/*	onReady_daemon() {
 		var check = () => {
 			if(this.ready) {
 				if(this.onReady == null)
@@ -39,12 +39,12 @@ let Framework = class Framework {
 			}
 		};
 		check();
-	}
+	}*/
 };
 
 let framework = new Framework("");
 
-framework.onReady_daemon();
+//framework.onReady_daemon();
 
 http.get('http://localhost:' + mp_port + '/', (response) => {
   var argv = "";
@@ -57,7 +57,8 @@ http.get('http://localhost:' + mp_port + '/', (response) => {
   // called when the complete response is received.
   response.on('end', () => {
     framework.argv = argv;
-    framework.ready = true;
+//    framework.ready = true;
+    framework.onReady();
   });
 
 }).on("error", (error) => {

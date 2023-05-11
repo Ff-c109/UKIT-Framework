@@ -230,16 +230,21 @@ var on_request = (request, response) => {
         fs.exists(path, (existance) => {
             if(existance) {
                 var rf = fs.createReadStream(path, {highWaterMark: 4096});
-		var sended = true;
+		var lastSend;
+		var lastProm;
+		var waitSended = () => {
+			var prom = new Promise(resolve => {
+				lastSend = resolve;
+			});
+			return prom;
+		};
 		rf.on("readable", async () => {
-			while(!sended) {
-				for(var i = 0; i < 2; i++) await sleep(0);
-			}
-			sended = false;
+			await lastProm;
+			lastProm = waitSended();
 			var data;
 			if((data = rf.read()) != null)
 				response.write(data, () => {
-					sended = true;
+					lastSend();
 				});
 		});
 		rf.on("end", () => {
