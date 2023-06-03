@@ -225,8 +225,15 @@ var on_request = (request, response) => {
     else {
         console.log("Common File.");
         var mimetype = mime.getType(path);
-        console.log("MIME: " + mimetype);
-        response.writeHead(200, {'Content-Type':mimetype == "text/html" ? "text/html;charset=utf-8" : mimetype});
+        try {
+            console.log(mimetype.substring(0, 5) == "text/");
+        }
+        catch (e) {
+            mimetype="text/plain";
+            console.log(mimetype.substring(0, 5) == "text/");
+        }
+        console.log("MIME: " + ((mimetype.substring(0, 5) == "text/") ? (mimetype + ";charset=utf-8") : mimetype));
+        response.writeHead(200, {'Content-Type': ((mimetype.substring(0, 5) == "text/") ? (mimetype + ";charset=utf-8") : mimetype)});
         fs.exists(path, (existance) => {
             if(existance) {
                 var rf = fs.createReadStream(path, {highWaterMark: 4096});
@@ -250,6 +257,11 @@ var on_request = (request, response) => {
 		rf.on("end", () => {
 			response.end();
 		});
+        rf.on("error", e => {
+            response.write(e.toString());
+            response.end();
+            console.log(e);
+        });
             }
             else {
                 response.statusCode = 404;
